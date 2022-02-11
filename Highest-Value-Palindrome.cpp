@@ -16,8 +16,55 @@ vector<string> split(const string &);
  *  3. INTEGER k
  */
 
-string highestValuePalindrome(string s, int n, int k) {
+// from https://www.hackerrank.com/challenges/richie-rich/forum by mr_fng
+string highestValuePalindrome(string s, int n, int k)
+{
+    int lives = k;
+    std::vector<bool> mod(n,false);  
+        
+    for (int i = 0; i < n/2; ++i) 
+    {
+        if (s[i] != s[n-i-1])
+        {
+            mod[i] = true;
+            lives--;
+        }
+        
+        if (s[i] < s[n-i-1])
+            s[i] = s[n-i-1];
+        else if (s[i] > s[n-i-1])
+            s[n-i-1] = s[i];
+        
+        if (lives < 0)
+            return "-1";       
+    }
 
+    int j = 0;
+
+    while ((lives > 0) && (j < n/2))
+    {
+        if (s[j] != '9')
+        {
+            if (mod[j])
+                lives++;
+        
+            if (lives > 1)
+            {
+                s[j] = '9';
+                s[n-j-1] = '9';
+                lives -= 2;
+            }
+        }       
+        j++;        
+    }
+
+    if (n % 2 == 1)
+    {
+        if (lives > 0)
+            s[n/2]='9';
+    } 
+
+    return s;
 }
 
 int main()
@@ -83,4 +130,3 @@ vector<string> split(const string &str) {
 
     return tokens;
 }
-

@@ -51,19 +51,36 @@ string ltrim(const string &str)
     return s;
 }
 
-vector<string> split(const string &str) {
+string rtrim(const string &str)
+{
+    string s(str);
+    s.erase(
+        find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !isspace(ch); }).base(), s.end()
+    );
+    return s;
+}
+
+std::vector<string> split(const string &str)
+{
     vector<string> tokens;
+    string_view str_view(str);
+    size_t start = 0;
+    size_t end = 0;
 
-    string::size_type start = 0;
-    string::size_type end = 0;
-
-    while ((end = str.find(" ", start)) != string::npos) {
-        tokens.push_back(str.substr(start, end - start));
-
+    while ((end = str_view.find(' ', start)) != string_view::npos)
+    {
+        if (end > start)
+        {
+            tokens.emplace_back(str_view.substr(start, end - start));
+        }
         start = end + 1;
     }
 
-    tokens.push_back(str.substr(start));
+    if (start < str_view.size())
+    {
+        tokens.emplace_back(str_view.substr(start));
+    }
 
     return tokens;
 }
+

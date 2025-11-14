@@ -16,6 +16,55 @@ vector<string> split(const string &);
  *  3. INTEGER k
  */
 
+string highestValuePalindrome(string s, int n, int k) {
+    vector<bool> changed(n, false);
+    int left = 0, right = n - 1;
+    int used = 0;
+
+    while (left < right) {
+        if (s[left] != s[right]) {
+            char maxChar = max(s[left], s[right]);
+            s[left] = s[right] = maxChar;
+            changed[left] = changed[right] = true;
+            used++;
+        }
+        left++;
+        right--;
+    }
+
+    if (used > k)
+        return "-1";
+
+    left = 0;
+    right = n - 1;
+    int remain = k - used;
+
+    while (left <= right) {
+        if (left == right) {
+            if (remain > 0 && s[left] != '9')
+                s[left] = '9';
+        } else {
+            if (s[left] != '9') {
+                if (changed[left] || changed[right]) {
+                    if (remain >= 1) {
+                        s[left] = s[right] = '9';
+                        remain -= 1;
+                    }
+                } else {
+                    if (remain >= 2) {
+                        s[left] = s[right] = '9';
+                        remain -= 2;
+                    }
+                }
+            }
+        }
+        left++;
+        right--;
+    }
+
+    return s;
+}
+
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));
@@ -40,7 +89,6 @@ int main()
 
     return 0;
 }
-
 
 string ltrim(const string &str)
 {

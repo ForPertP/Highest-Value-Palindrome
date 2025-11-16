@@ -31,3 +31,28 @@ class Result
     }
 
 }
+
+
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        string[] firstMultipleInput = Console.ReadLine().TrimEnd().Split(' ');
+
+        int n = Convert.ToInt32(firstMultipleInput[0]);
+
+        int k = Convert.ToInt32(firstMultipleInput[1]);
+
+        string s = Console.ReadLine();
+
+        string result = Result.highestValuePalindrome(s, n, k);
+
+        textWriter.WriteLine(result);
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}

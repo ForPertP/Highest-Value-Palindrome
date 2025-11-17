@@ -27,11 +27,71 @@ class Result
 
     public static string highestValuePalindrome(string s, int n, int k)
     {
+        char[] arr = s.ToCharArray();
+        bool[] changed = new bool[n];
 
+        int left = 0, right = n - 1;
+        int used = 0;
+
+        while (left < right)
+        {
+            if (arr[left] != arr[right])
+            {
+                if (arr[left] > arr[right])
+                    arr[right] = arr[left];
+                else
+                    arr[left] = arr[right];
+
+                changed[left] = changed[right] = true;
+                used++;
+            }
+            left++;
+            right--;
+        }
+
+        if (used > k)
+            return "-1";
+
+        int remain = k - used;
+        left = 0;
+        right = n - 1;
+
+        while (left <= right)
+        {
+            if (left == right)
+            {
+                if (remain > 0 && arr[left] != '9')
+                    arr[left] = '9';
+            }
+            else
+            {
+                if (arr[left] != '9')
+                {
+                    if (changed[left] || changed[right])
+                    {
+                        if (remain >= 1)
+                        {
+                            arr[left] = arr[right] = '9';
+                            remain--;
+                        }
+                    }
+                    else
+                    {
+                        if (remain >= 2)
+                        {
+                            arr[left] = arr[right] = '9';
+                            remain -= 2;
+                        }
+                    }
+                }
+            }
+            left++;
+            right--;
+        }
+
+        return new string(arr);
     }
-
 }
-
 
 
 class Solution
